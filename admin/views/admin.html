@@ -1,0 +1,50 @@
+{% extends 'templates/base.html' %}
+
+{% block title_after %} - Admin{% endblock %}
+
+{% block content %}
+
+<div id="wrapper" class="has-text-centered-mobile">
+    <section id="hero" class="hero is-medium">
+        <div class="hero-body">
+            <div class="container">
+                <div class="columns">
+                    <div class="column is-one-fifth">
+                        <div class="box">
+                            <aside class="menu">
+                                <h2 class="subtitle">Lista Funzioni</h2>
+                                <ul class="menu-list">
+                                    <li>
+                                        <a href="/admin/players" class=""><i class="fas fa-users"></i>&nbsp;&nbsp;Lista utenti</a>
+                                    </li>
+                                    <li>
+                                        <a href="/admin/invoices" class=""><i class="fas fa-person-booth"></i>&nbsp;&nbsp;Gestisci le fatture</a>
+                                    </li>
+                                    <li>
+                                        <a href="/admin/beehives" class=""><i class="fas fa-house-user"></i>&nbsp;&nbsp;Gestisci un gruppo di Beehives</a>
+                                    </li>
+                                    <li>
+                                        <a href="/admin/settings" class="is-"><i class="fas fa-cog"></i></i>&nbsp;&nbsp;Impostazioni</a>
+                                    </li>
+                                </ul>
+                            </aside>
+                        </div>
+                    </div>
+                    <div class="column is-three-fifths">
+                        <div class="box">
+                            <h1 class="title has-text-centered">Resconto APU</h1>
+
+                        </div>
+                    </div>
+                    <div class="column is-one.fifth">
+                        <div class="box">
+                            <h1 class="title has-text-centered">Ultimo update</h1>
+                            <h2 class="subtitle has-text-centered">Oggi</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

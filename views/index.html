@@ -1,0 +1,55 @@
+{% extends 'templates/base.html' %}
+
+{% block title_after %} - Home Page{% endblock %}
+
+{% block header %}
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        html {
+            background-color: #eeeeee;
+            background-image: url({{ url_for('static', filename="images/bg.svg") }});
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+        }
+        .button{
+        background-color: #43a047 !important;
+        }
+    </style>
+</head>
+{% endblock %}
+
+{% block content %}
+<div id="wrapper" class="has-text-centered-mobile">
+    <section id="hero" class="hero is-medium">
+        <div class="hero-body">
+            <div class="container">
+                <div class="modal">
+                    <div class="modal-background" onclick="document.getElementsByClassName('modal')[0].classList.remove('is-active')"></div>
+                    <div class="modal-content">
+                        <div class="box has-text-centered">
+                            Contatta @Kiiw o @Lego11 su Discord per saperne di più!
+                        </div>
+                    </div>
+                </div>
+                <h2 class="subtitle">
+					<span class="has-text-centered is-block">
+						Da 20 Anni per RGBCraft
+					</span>
+				</h2>
+				<h1 class="title is-rounded">
+					<span class="box is-size-2 has-text-centered is-block animate__animated animate__shakeX">Associazione Apicoltori Unita.</span>
+				</h1>
+				<div class="has-text-centered">
+                    <div class="buttons has-addons is-centered animate__animated animate__bounceInUp">
+                        <a href="/login" <button class="button is-large is-primary is-rounded has-text-weight-bold" type="submit" style="width: 15rem;">Entra Subito! &InvisibleComma; <i class="fas fa-dragon"></i></button></a>
+                    </div>
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+
+
+{% endblock %}

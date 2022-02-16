@@ -1,0 +1,137 @@
+{% extends 'templates/base.html' %}
+
+{% block title_after %} - Paga Fattura{% endblock %}
+
+{% block content %}
+
+<div id="wrapper" class="has-text-centered-mobile">
+    <section id="hero" class="hero is-medium">
+        <div class="hero-body">
+            <div class="container">
+                {% if message is defined %}
+                <article id="completato" class="message {{message_type}}">
+                    <div class="message-header">
+                      <p>INFO!</p>
+                      <button class="delete" aria-label="delete"></button>
+                    </div>
+                    <div class="message-body">
+                        {{message}}
+                    </div>
+                </article>
+                {% endif %}
+                <div class="columns">
+                    <div class="column is-one-fifth">
+                        <div class="box">
+                            <aside class="menu">
+                                <h2 class="subtitle">Lista Funzioni</h2>
+                                <ul class="menu-list">
+                                    <li>
+                                        <a href="/dashboard/payInvoices" class="is-active"><i class="fas fa-users"></i>&nbsp;&nbsp;Vedi le Fatture</a>
+                                    </li>
+                                </ul>
+                            </aside>
+                        </div>
+                    </div>
+                    <div class="column is-three-fifths">
+                        <div class="box">
+                            <h1 class="title has-text-centered">Resconto Fatture</h1>
+                            <table id="table" class="table sortable is-striped is-bordered is-fullwidth">
+                                <thead>
+                                    <tr>
+                                        <th class="sort" data-sort="id" onclick="sortTable(0)">ID</th>
+                                        <th class="sort" data-sort="user" onclick="sortTable(1)">Destinatario</th>
+                                        <th class="sort" data-sort="ammount" onclick="sortTable(2)">Importo</th>
+                                        <th class="sort" data-sort="doc">Emissione Fattura:</th>
+                                        <th class="sort" data-sort="paid">Pagata:</th>                                             
+                                        <th colspan="2">
+                                            <input type="text" id="search" placeholder="Cerca" />
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{data["invoices"]|safe}}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="column is-one.fifth">
+                        <div class="box">
+                            <h1 class="title is-5 has-text-centered">Ultimo Aggiornamento:</h1>
+                            <h2 class="subtitle has-text-centered">{{date}}</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script>
+    var $rows = $('#table tbody tr');
+    $('#search').keyup(function() {
+        var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+        
+        $rows.show().filter(function() {
+            var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+            return !~text.indexOf(val);
+        }).hide();
+    });
+  
+
+    function sortTable(n) {
+    var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+    table = document.getElementById("table");
+    switching = true;
+    //Set the sorting direction to ascending:
+    dir = "asc"; 
+    /*Make a loop that will continue until
+    no switching has been done:*/
+    while (switching) {
+        //start by saying: no switching is done:
+        switching = false;
+        rows = table.rows;
+        /*Loop through all table rows (except the
+        first, which contains table headers):*/
+        for (i = 1; i < (rows.length - 1); i++) {
+        //start by saying there should be no switching:
+        shouldSwitch = false;
+        /*Get the two elements you want to compare,
+        one from current row and one from the next:*/
+        x = rows[i].getElementsByTagName("TD")[n];
+        y = rows[i + 1].getElementsByTagName("TD")[n];
+        /*check if the two rows should switch place,
+        based on the direction, asc or desc:*/
+        if (dir == "asc") {
+            if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+            //if so, mark as a switch and break the loop:
+            shouldSwitch= true;
+            break;
+            }
+        } else if (dir == "desc") {
+            if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+            //if so, mark as a switch and break the loop:
+            shouldSwitch = true;
+            break;
+            }
+        }
+        }
+        if (shouldSwitch) {
+        /*If a switch has been marked, make the switch
+        and mark that a switch has been done:*/
+        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+        switching = true;
+        //Each time a switch is done, increase this count by 1:
+        switchcount ++;      
+        } else {
+        /*If no switching has been done AND the direction is "asc",
+        set the direction to "desc" and run the while loop again.*/
+        if (switchcount == 0 && dir == "asc") {
+            dir = "desc";
+            switching = true;
+        }
+        }
+    }
+    }
+</script>
+
+{% endblock %}

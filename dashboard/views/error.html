@@ -1,0 +1,44 @@
+{% extends 'templates/base.html' %}
+
+{% block title_after %} - :( {% endblock %}
+
+{% block header %}
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        html {
+            background-color: #eeeeee;
+        }
+        .button{
+        background-color: #43a047 !important;
+        }
+    </style>
+</head>
+{% endblock %}
+
+{% block content %}
+<div id="wrapper" class="has-text-centered-mobile">
+    <section id="hero" class="hero is-medium">
+        <div class="hero-body">
+            <div class="container">
+				<h1 class="title">
+                    {% if error %}
+                    <span class="is-size-2 has-text-centered is-block animate__animated animate__shakeX"><i class="fas fa-exclamation-triangle" style="color:red"></i>{{error|safe}}<i class="fas fa-exclamation-triangle" style="color:red"></i></span>
+                    {% else %}
+                    <span class="is-size-2 has-text-centered is-block animate__animated animate__shakeX"><i class="fas fa-exclamation-triangle" style="color:red"></i>Errore generico<i class="fas fa-exclamation-triangle" style="color:red"></i></span>
+                    {% endif %}
+				</h1>
+                <h2 class="subtitle">
+                    <span class="is-size-5 has-text-centered is-block">Perfavore contatta il responsabile gestione APU.</span>
+                    <br>
+                    <div class="buttons has-addons is-centered">
+                        <a href="{{url_for('dashboard.index')}}"> <button type="button" class="button is-large is-rounded is-info is-centered has-text-weight-bold">Dashboard</button></a>
+                    </div>
+                </h2>
+			</div>
+		</div>
+	</section>
+</div>
+
+
+{% endblock %}

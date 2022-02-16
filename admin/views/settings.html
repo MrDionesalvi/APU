@@ -1,0 +1,114 @@
+{% extends 'templates/base.html' %}
+
+{% block title_after %} - Admin{% endblock %}
+
+{% block content %}
+
+<div id="wrapper" class="has-text-centered-mobile">
+    <section id="hero" class="hero is-medium">
+        <div class="hero-body">
+            <div class="container">
+                <article id="completato" class="message is-success follow-scroll" style="display: none">
+                    <div class="message-header">
+                      <p>Compleatato</p>
+                      <button class="delete" aria-label="delete"></button>
+                    </div>
+                    <div class="message-body">
+                        Hai modificato con <strong>successo</strong> le impostazioni!
+                    </div>
+                </article>
+                <div class="columns">
+                    <div class="column is-one-fifth">
+                        <div class="box">
+                            <aside class="menu">
+                                <h2 class="subtitle">Lista Funzioni</h2>
+                                <ul class="menu-list">
+                                    <li>
+                                        <a href="/admin/players" class=""><i class="fas fa-users"></i>&nbsp;&nbsp;Lista utenti</a>
+                                    </li>
+                                    <li>
+                                        <a href="/admin/invoices" class=""><i class="fas fa-person-booth"></i>&nbsp;&nbsp;Gestisci le fatture</a>
+                                    </li>
+                                    <li>
+                                        <a href="/admin/beehives" class=""><i class="fas fa-house-user"></i>&nbsp;&nbsp;Gestisci un gruppo di Beehives</a>
+                                    </li>
+                                    <li>
+                                        <a href="/admin/settings" class="is-active"><i class="fas fa-cog"></i></i>&nbsp;&nbsp;Impostazioni</a>
+                                    </li>
+                                </ul>
+                            </aside>
+                        </div>
+                    </div>
+                    <div class="column is-three-fifths">
+                        <div class="box">
+                            <h1 class="title has-text-centered">Resconto Impostazioni</h1>
+                            <h2 class="subtitle">Modifica le tasse delle API</h2>
+                            <textarea name="Taxes" rows="30" cols="80" spellcheck="false">
+                                if common_category > 1:
+                                    total += common * 2500
+
+                                if precious_category == 1:
+                                    total += precious * 2500
+                                elif precious_category == 2:
+                                    total += precious * 5000
+                                elif precious_category == 3:
+                                    total += precious * 10000
+                                elif precious_category == 4:
+                                    total += precious * 20000
+                                elif precious_category == 5:
+                                    total += precious * 35000
+                                elif precious_category == 6:
+                                    total += precious * 42000
+                                elif precious_category == 7:
+                                    total += precious * 62000
+                                elif precious_category > 8:
+                                    total += precious * 85000
+
+                                if mineral_category == 1:
+                                    total += mineral * 2500
+                                elif mineral_category == 2:
+                                    total += mineral * 5000
+                                elif mineral_category == 3:
+                                    total += mineral * 10000
+                                elif mineral_category == 4:
+                                    total += mineral * 20000
+                                elif mineral_category == 5:
+                                    total += mineral * 35000
+                                elif mineral_category == 6:
+                                    total += mineral * 42000
+                                elif mineral_category == 7:
+                                    total += mineral * 62000
+                                elif mineral_category > 8:
+                                    total += mineral * 85000
+                                
+                                if nether_category == 2:
+                                    total += nether * 500
+                                elif nether_category == 3:
+                                    total += nether * 1000
+                                elif nether_category == 4:
+                                    total += nether * 5000
+                                elif nether_category == 5:
+                                    total += nether * 35000
+                                elif nether_category == 6:
+                                    total += nether * 42000
+                                elif nether_category > 7:
+                                    total += nether * 85000
+                            </textarea>
+                        </div>
+                    </div>
+                    <div class="column is-one.fifth">
+                        <div class="box">
+                            <h1 class="title is-5 has-text-centered">Ultimo Aggiornamento:</h1>
+                            <h2 class="subtitle has-text-centered">{{date}}</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script>
+</script>
+
+{% endblock %}

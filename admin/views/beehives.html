@@ -1,0 +1,193 @@
+{% extends 'templates/base.html' %}
+
+{% block title_after %} - Admin{% endblock %}
+
+{% block content %}
+
+<div id="wrapper" class="has-text-centered-mobile">
+    <section id="hero" class="hero is-medium">
+        <div class="hero-body">
+            <div class="container">
+                <article id="completato" class="message is-success follow-scroll" style="display: none">
+                    <div class="message-header">
+                      <p>Compleatato</p>
+                      <button class="delete" aria-label="delete"></button>
+                    </div>
+                    <div class="message-body">
+                        Hai eliminato con <strong>successo</strong> il Beehive!
+                    </div>
+                </article>
+                <article id="completato2" class="message is-success follow-scroll" style="display: none">
+                    <div class="message-header">
+                      <p>Compleatato</p>
+                      <button class="delete" aria-label="delete"></button>
+                    </div>
+                    <div class="message-body">
+                        Hai modificato con <strong>successo</strong> la riga!
+                    </div>
+                </article>
+                <div class="columns">
+                    <div class="column is-one-fifth">
+                        <div class="box">
+                            <aside class="menu">
+                                <h2 class="subtitle">Lista Funzioni</h2>
+                                <ul class="menu-list">
+                                    <li>
+                                        <a href="/admin/players" class=""><i class="fas fa-users"></i>&nbsp;&nbsp;Lista utenti</a>
+                                    </li>
+                                    <li>
+                                        <a href="/admin/invoices" class=""><i class="fas fa-person-booth"></i>&nbsp;&nbsp;Gestisci le fatture</a>
+                                    </li>
+                                    <li>
+                                        <a href="/admin/beehives" class="is-active"><i class="fas fa-house-user"></i>&nbsp;&nbsp;Gestisci un gruppo di Beehives</a>
+                                    </li>
+                                    <li>
+                                        <a href="/admin/settings" class="is-"><i class="fas fa-cog"></i></i>&nbsp;&nbsp;Impostazioni</a>
+                                    </li>
+                                </ul>
+                            </aside>
+                        </div>
+                    </div>
+                    <div class="column is-three-fifths">
+                        <div class="box">
+                            <h1 class="title has-text-centered">Resconto Beehives</h1>
+                            <table id="table" class="table sortable is-striped is-bordered is-fullwidth">
+                                <thead>
+                                    <tr>
+                                        <th class="sort" data-sort="id" onclick="sortTable(0)">ID</th>
+                                        <th class="sort" data-sort="owner" onclick="sortTable(1)">Owner</th>
+                                        <th class="sort" data-sort="name" onclick="sortTable(2)">Nome</th>
+                                        <th class="sort" data-sort="x_coord">X</th>
+                                        <th class="sort" data-sort="z_coord">Z</th>
+                                        <th class="sort" data-sort="doc">Creato:</th>
+                                        <th class="sort" data-sort="bees">API Contenute</th>
+                                        <th colspan="2">
+                                            <input type="text" id="search" placeholder="Cerca" />
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{data["beehives"]|safe}}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="column is-one.fifth">
+                        <div class="box">
+                            <h1 class="title is-5 has-text-centered">Ultimo Aggiornamento:</h1>
+                            <h2 class="subtitle has-text-centered">{{date}}</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script>
+    var $rows = $('#table tbody tr');
+    $('#search').keyup(function() {
+        var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+        
+        $rows.show().filter(function() {
+            var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+            return !~text.indexOf(val);
+        }).hide();
+    });
+    function DeleteButton(element){
+
+    var value = element.getAttribute('value');
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', '/admin/deleteBeehive?beehive='+value);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState !== 4) return;
+        if (xhr.status === 200) {
+            document.getElementById("completato").style.display = "inline";
+            element.parentNode.parentNode.style.display = 'none';
+            setTimeout(() => { window.location.reload(false); }, 1000);
+        } else {
+            alert(xhr.responseText)
+        }
+    }
+
+    // start request
+    xhr.send();
+
+    }
+    function ChangeButton(element){
+
+    var value = element.getAttribute('value');
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', '/admin/changeBeehives?user='+value);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState !== 4) return;
+        if (xhr.status === 200) {
+            document.getElementById("completato2").style.display = "inline";
+            setTimeout(() => { window.location.reload(false); }, 1000);
+        } else {
+            alert(xhr.responseText)
+        }
+    }
+
+    // start request
+    xhr.send();
+
+    }
+
+    function sortTable(n) {
+    var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+    table = document.getElementById("table");
+    switching = true;
+    //Set the sorting direction to ascending:
+    dir = "asc"; 
+    /*Make a loop that will continue until
+    no switching has been done:*/
+    while (switching) {
+        //start by saying: no switching is done:
+        switching = false;
+        rows = table.rows;
+        /*Loop through all table rows (except the
+        first, which contains table headers):*/
+        for (i = 1; i < (rows.length - 1); i++) {
+        //start by saying there should be no switching:
+        shouldSwitch = false;
+        /*Get the two elements you want to compare,
+        one from current row and one from the next:*/
+        x = rows[i].getElementsByTagName("TD")[n];
+        y = rows[i + 1].getElementsByTagName("TD")[n];
+        /*check if the two rows should switch place,
+        based on the direction, asc or desc:*/
+        if (dir == "asc") {
+            if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+            //if so, mark as a switch and break the loop:
+            shouldSwitch= true;
+            break;
+            }
+        } else if (dir == "desc") {
+            if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+            //if so, mark as a switch and break the loop:
+            shouldSwitch = true;
+            break;
+            }
+        }
+        }
+        if (shouldSwitch) {
+        /*If a switch has been marked, make the switch
+        and mark that a switch has been done:*/
+        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+        switching = true;
+        //Each time a switch is done, increase this count by 1:
+        switchcount ++;      
+        } else {
+        /*If no switching has been done AND the direction is "asc",
+        set the direction to "desc" and run the while loop again.*/
+        if (switchcount == 0 && dir == "asc") {
+            dir = "desc";
+            switching = true;
+        }
+        }
+    }
+    }
+</script>
+
+{% endblock %}

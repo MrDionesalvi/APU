@@ -1,0 +1,261 @@
+{% extends 'templates/base.html' %}
+
+{% block title_after %} - Dashboard{% endblock %}
+
+{% block header %}
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bulma-tooltip.min.css') }}">
+</head>
+{% endblock %}
+
+{% block content %}
+<div id="wrapper" class="has-text-centered-mobile">
+    <section id="hero2" class="hero2" style="padding-top:10px">
+        <div class="hero-body">
+            <div class="container">
+                {% if error %}
+                <div class="notification is-danger">
+                    <button class="delete"></button>
+                    {{ error }}
+                </div>
+                {% endif %}
+                {% if success %}
+                <div class="notification is-success">
+                    <button class="delete"></button>
+                    {{ success }}
+                </div>
+                {% endif %}
+                <div class="modal">
+                    <div class="modal-background" onclick="document.getElementsByClassName('modal')[0].classList.remove('is-active')"></div>
+                    <div class="modal-content">
+                        <div class="box has-text-centered">
+                            <div class="form">
+                                <h1 class="title is-3 has-text-dark has-text-centered">Nuovo Alveare</h1>
+                                <p class="has-text-centered">Aggiungi un'alveare
+                                    <span data-tooltip="L'alveare è il gruppo di Apiary che poi andrai ad inserire." class="has-tooltip-right has-tooltip-arrow has-tooltip-multiline">
+                                        <i class="icon far fa-question-circle"></i>
+                                    </span>
+                                </p>
+                                <hr>
+                                <form action="/dashboard/add/beehive" method="POST">
+                                    <div class="field">
+                                        <label class="label" for="name">Nome:</label>
+                                        <div class="control has-icons-left">
+                                            <input class="input" type="text" placeholder="ES: Lanark" value="{{ name_value }}" name="name" id="name">
+                                            <span class="icon is-small is-left">
+                                                <i class="fas fa-user-edit"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="field">
+                                        <label class="label" for="x_coords">Cordinata X:</label>
+                                        <div class="control has-icons-left">
+                                            <input class="input" type="number" placeholder="ES: 0" value="{{ x_coords_value }}" name="x_coords" id="x_coords">
+                                            <span class="icon is-small is-left">
+                                                <i class="fas fa-laptop-code"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="field">
+                                        <label class="label" for="z_coords">Cordinata Z:</label>
+                                        <div class="control has-icons-left">
+                                            <input class="input" type="number" placeholder="ES: 0" value="{{ z_coords_value }}" name="z_coords" id="z_coords">
+                                            <span class="icon is-small is-left">
+                                                <i class="fas fa-laptop-code"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="buttons has-addons is-centered">
+                                        <button class="button mt-4 is-primary is-rounded has-text-weight-bold" type="submit" style="width: 10rem;" onclick="this.classList.add('is-loading')">Aggiungi</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="modal-close is-large" aria-label="close" onclick="document.getElementsByClassName('modal')[0].classList.remove('is-active')"></button>
+                </div>
+                <div class="modal">
+                    <div class="modal-background" onclick="document.getElementsByClassName('modal')[1].classList.remove('is-active')"></div>
+                    <div class="modal-content">
+                        <div class="box has-text-centered">
+                            <div class="form">
+                                <h1 class="title is-3 has-text-dark has-text-centered">Nuovo Apiary</h1>
+                                <p class="has-text-centered">Aggiungi un'apiary
+                                    <span data-tooltip="L'apiary è dove metti la tua regina" class="has-tooltip-right has-tooltip-arrow has-tooltip-multiline">
+                                        <i class="icon far fa-question-circle"></i>
+                                    </span>
+                                </p>
+                                <hr>
+                                <form action="/dashboard/add/apiary" method="POST">
+                                    <div class="field">
+                                        <label class="label" for="idBeehive">Seleziona l'alveare:</label>
+                                        <div class="control has-icons-left">
+                                            <select class="input" name="idBeehive" id="idBeehive" required>
+                                                <option value=-1>Scegli l'alveare</option>
+                                                {{selector|safe}}
+
+                                            </select>
+                                            <span class="icon is-small is-left">
+                                                <i class="fas fa-user-edit"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="field">
+                                        <label class="label" for="type">Tipo dell'ape:</label>
+                                        <div class="control has-icons-left">
+                                            <select class="input" name="type" id="type" required>
+                                                <option value=0>Ape Comune</option>
+                                                <option value=1>Ape Preziosa</option>
+                                                <option value=2>Ape Minerale</option>
+                                                <option value=3>Ape Nether</option>
+                                            </select>
+                                            <span class="icon is-small is-left">
+                                                <i class="fas fa-user-edit"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="field">
+                                        <label class="label" for="ammount">Se vuoi aggiungere più api dello stesso tipo</label>
+                                        <label class="label" for="ammount">Inserisci il numero di api da aggiungere:</label>
+                                        <div class="control has-icons-left">
+                                            <input class="input" type="number" placeholder="ES: 0" value="1" name="ammount" id="ammount" min="1" max="10">
+                                            <span class="icon is-small is-left">
+                                                <i class="fas fa-user-edit"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="buttons has-addons is-centered">
+                                        <button class="button mt-4 is-primary is-rounded has-text-weight-bold" type="submit" style="width: 10rem;" onclick="this.classList.add('is-loading')">Aggiungi</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="modal-close is-large" aria-label="close" onclick="document.getElementsByClassName('modal')[1].classList.remove('is-active')"></button>
+                </div>
+                <div class="modal">
+                    <div class="modal-background" onclick="document.getElementsByClassName('modal')[2].classList.remove('is-active')"></div>
+                    <div class="modal-content">
+                        <div class="box has-text-centered">
+                            <div class="form">
+                                <h1 class="title is-3 has-text-dark has-text-centered">Rimuove Alveare</h1>
+                                <p class="has-text-centered">Rimuovi un'alveare</p>
+                                <hr>
+                                <form action="/dashboard/delete/beehive" method="POST">
+                                    <div class="field">
+                                        <label class="label" for="idBeehive">Seleziona l'alveare:</label>
+                                        <div class="control has-icons-left">
+                                            <select class="input" name="idBeehive" id="idBeehive" required>
+                                                <option value=-1>Scegli l'alveare</option>
+                                                {{selector|safe}}
+
+                                            </select>
+                                            <span class="icon is-small is-left">
+                                                <i class="fas fa-user-edit"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="buttons has-addons is-centered">
+                                        <button class="button mt-4 is-danger is-rounded has-text-weight-bold" type="submit" style="width: 10rem;" onclick="this.classList.add('is-loading')">Rimuovi</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="modal-close is-large" aria-label="close" onclick="document.getElementsByClassName('modal')[2].classList.remove('is-active')"></button>
+                </div>
+                <div class="modal">
+                    <div class="modal-background" onclick="document.getElementsByClassName('modal')[3].classList.remove('is-active')"></div>
+                    <div class="modal-content">
+                        <div class="box has-text-centered">
+                            <div class="form">
+                                <h1 class="title is-3 has-text-dark has-text-centered">Rimuove Apiary</h1>
+                                <p class="has-text-centered">Rimuovi un'apiary</p>
+                                <hr>
+                                <form action="/dashboard/delete/apiary" method="POST">
+                                    <div class="field">
+                                        <label class="label" for="idApiary">Seleziona l'apiary:</label>
+                                        <div class="control has-icons-left">
+                                            <select class="input" name="idApiary" id="idApiary" required>
+                                                <option value=-1>Scegli l'apiary</option>
+                                                {% if selector2 %}
+                                                    {{selector2|safe}}
+                                                {% endif %}
+                                            </select>
+                                            <span class="icon is-small is-left">
+                                                <i class="fas fa-user-edit"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="buttons has-addons is-centered">
+                                        <button class="button mt-4 is-danger is-rounded has-text-weight-bold" type="submit" style="width: 10rem;" onclick="this.classList.add('is-loading')">Rimuovi</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="modal-close is-large" aria-label="close" onclick="document.getElementsByClassName('modal')[3].classList.remove('is-active')"></button>
+                </div>
+                <div class="columns">
+                    <div class="column is-one-fifth">
+                        <div class="box">
+                            <button class="button is-success is-small" style="width: 48%" onclick="document.getElementsByClassName('modal')[0].classList.add('is-active')">Nuovo Alveare</button>
+                            <button class="button is-danger is-small" style="width: 48%" onclick="document.getElementsByClassName('modal')[2].classList.add('is-active')">Elimina Alveare</button>
+                            <br>
+                            <br>
+                            <button class="button is-success is-small" style="width: 48%" onclick="document.getElementsByClassName('modal')[1].classList.add('is-active')">Nuovo Apiary</button>
+                            <button class="button is-danger is-small" style="width: 48%" onclick="document.getElementsByClassName('modal')[3].classList.add('is-active')">Elimina Apiary</button>
+                        </div>
+
+                        <div class="box">
+                            <aside class="menu">
+                                <ul class="menu-list">
+                                    {{tree|safe}}
+                                </ul>
+                            </aside>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="box">
+                            {% if info %}
+                            <h1 class="title">{{info['name']}}</h1>
+                            <h1 class="subtitle">Registrato il {{info['doc']}}</h1>
+                            <br>
+                            <br>
+                            <div class="box">
+                                <h1 class="subtitle">Api:</h1>
+                                <br>
+                                <p>{{info['common_bees']}}&#9; Api Comuni</p>
+                                <p>{{info['precious_bees']}}&#9; Api Preziose</p>
+                                <p>{{info['mineral_bees']}}&#9; Api Minerale</p>
+                                <p>{{info['nether_bees']}}&#9; Api Nether</p>
+                                <br>
+                                <p>Questo alveare ogni mese ti costa: {{info['price_bees']}} IC</p>
+                            </div>
+                            <iframe src="https://mappa.rgbcraft.com/?worldname=world&mapname=flat&zoom=6&x={{info['x_coords']}}&y=64&z={{info['z_coords']}}" style="border:none; width:80%; height:350px" title="Mappa Alveare"></iframe>
+                            {% else %}
+                            <h1 class="title">Nessun alveare selezionato</h1>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="column is-one-fifth">
+                        <div class="box">
+                            <h1 class="title">Ultima Fattura</h1>
+                            <h6 class="subtitle is-6">Ultimo Aggiornamento:<br> {{date}}</h6>
+                            <br>
+                            <br>
+                            <br>
+                            {% if invoice %}
+                            {{invoice|safe}}
+                            {% endif %}
+                        </div>
+                    </div>
+                  </div>
+			</div>
+		</div>
+	</section>
+</div>
+
+
+{% endblock %}
